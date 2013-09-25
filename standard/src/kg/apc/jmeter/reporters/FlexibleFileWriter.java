@@ -2,15 +2,6 @@
 // TODO: buffer file writes to bigger chunks?
 package kg.apc.jmeter.reporters;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.channels.FileLock;
-import java.util.ArrayList;
-import java.util.Arrays;
 import kg.apc.jmeter.JMeterPluginsUtils;
 import org.apache.jmeter.engine.event.LoopIterationEvent;
 import org.apache.jmeter.engine.util.NoThreadClone;
@@ -24,8 +15,17 @@ import org.apache.jmeter.testelement.TestListener;
 import org.apache.jorphan.logging.LoggingManager;
 import org.apache.log.Logger;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
- *
  * @author undera
  * @see ResultCollector
  */
@@ -263,7 +263,7 @@ public class FlexibleFileWriter
     }
 
     private void appendSampleVariable(ByteBuffer buf, SampleEvent evt, int varID) {
-        if(SampleEvent.getVarCount() < varID+1) {
+        if (SampleEvent.getVarCount() < varID + 1) {
             buf.put(("UNDEFINED_variable#" + varID).getBytes());
             log.warn("variable#" + varID + " does not exist!");
         } else {
@@ -274,7 +274,6 @@ public class FlexibleFileWriter
     }
 
     /**
-     *
      * @param buf
      * @param result
      * @param fieldID
@@ -356,7 +355,7 @@ public class FlexibleFileWriter
                 break;
 
             case 16:
-                buf.put(result.getSamplerData().getBytes());
+                buf.put(result.getRequestHeaders().getBytes());
                 break;
 
             case 17:
