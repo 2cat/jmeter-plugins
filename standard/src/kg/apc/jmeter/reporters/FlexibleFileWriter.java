@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,7 +45,7 @@ public class FlexibleFileWriter
             + "startTimeMillis endTimeMillis "
             + "responseTimeMicros latencyMicros "
             + "requestData responseData responseHeaders "
-            + "threadsCount ";
+            + "threadsCount allRequestHeaders addResponseData";
     private static final Logger log = LoggingManager.getLoggerForClass();
     private static final String OVERWRITE = "overwrite";
     private static final String FILENAME = "filename";
@@ -220,7 +221,7 @@ public class FlexibleFileWriter
             return;
         }
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 10);
+        ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 20);
         for (int n = 0; n < compiledConsts.length; n++) {
             if (compiledConsts[n] != null) {
                 synchronized (compiledConsts) {
@@ -228,7 +229,7 @@ public class FlexibleFileWriter
                 }
             } else {
                 if (!appendSampleResultField(buf, evt.getResult(), compiledFields[n])) {
-                    appendSampleVariable(buf, evt, compiledVars[n]);
+//                    appendSampleVariable(buf, evt, compiledVars[n]);
                 }
             }
         }
@@ -369,10 +370,27 @@ public class FlexibleFileWriter
             case 19:
                 buf.put(String.valueOf(result.getAllThreads()).getBytes());
                 break;
-
+            case 20:
+                if (result.getRequestHeaders() != null)
+                    buf.put(result.getRequestHeaders().replaceAll(regex, "").getBytes());
+                for (SampleResult sr : result.getSubResults()) {
+                    buf.put("\r\n".getBytes());
+                    buf.put(sr.getRequestHeaders().replaceAll(regex, "").getBytes());
+                }
+                break;
+            case 21:
+                if (result.getResponseData() != null)
+                    buf.put(new String(result.getResponseData(), Charset.forName("utf8")).replaceAll(regex, "").getBytes());
+                for (SampleResult sr : result.getSubResults()) {
+                    buf.put("\r\n".getBytes());
+                    buf.put(new String(sr.getResponseData(), Charset.forName("utf8")).replaceAll(regex, "").getBytes());
+                }
+                break;
             default:
                 return false;
         }
         return true;
     }
+
+    String regex = "\\s*|\t|\r|\n";
 }

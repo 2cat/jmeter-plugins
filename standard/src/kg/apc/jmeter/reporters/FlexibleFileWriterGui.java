@@ -1,30 +1,21 @@
 package kg.apc.jmeter.reporters;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import kg.apc.jmeter.JMeterPluginsUtils;
 import kg.apc.jmeter.gui.BrowseAction;
 import kg.apc.jmeter.gui.GuiBuilderHelper;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.visualizers.gui.AbstractListenerGui;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
- *
  * @author undera
  */
 public class FlexibleFileWriterGui extends AbstractListenerGui implements ClipboardOwner {
@@ -37,26 +28,28 @@ public class FlexibleFileWriterGui extends AbstractListenerGui implements Clipbo
     private JTextArea footer;
     private JButton browseButton;
     private String[] fields = {
-        "endTime", "Epoch time when the request was ended",
-        "endTimeMillis", "Same as endTime, but divided by 1000 (surrogate field, eg. 1311122631.104)",
-        "isFailed", "If response was marked as failed (surrogate field)",
-        "isSuccsessful", "If response was marked as successful",
-        "latency", "Latency, time to first response byte received (if available)",
-        "latencyMicros", "Same as latency, but multiplied by 1000 (surrogate field)",
-        "receivedBytes", "Number of request bytes received (if available)",
-        "requestData", "Request data from sample",
-        "responseCode", "Response code (eg. 200, 404, etc.)",
-        "responseData", "Response data",
-        "responseHeaders", "Response headers (if present in sample)",
-        "responseMessage", "Response message (eg. OK, Not Found, etc.)",
-        "responseTime", "Response time, time to full response loaded",
-        "responseTimeMicros", "Same as responseTime, but multiplied by 1000 (surrogate field)",
-        "sampleLabel", "Name of the sampler that made the request",
-        "sentBytes", "Number of request bytes sent (if available)",
-        "startTime", "Epoch time when the request was started",
-        "startTimeMillis", "Same as startTime, but divided by 1000 (surrogate field, eg. 1311121131.062)",
-        "threadName", "Name of thread in Thread Group that processed the request",
-        "variable#<N>", "Sample variable with index N (eg. variable#2), see help for details"
+            "endTime", "Epoch time when the request was ended",
+            "endTimeMillis", "Same as endTime, but divided by 1000 (surrogate field, eg. 1311122631.104)",
+            "isFailed", "If response was marked as failed (surrogate field)",
+            "isSuccsessful", "If response was marked as successful",
+            "latency", "Latency, time to first response byte received (if available)",
+            "latencyMicros", "Same as latency, but multiplied by 1000 (surrogate field)",
+            "receivedBytes", "Number of request bytes received (if available)",
+            "requestData", "Request data from sample",
+            "responseCode", "Response code (eg. 200, 404, etc.)",
+            "responseData", "Response data",
+            "responseHeaders", "Response headers (if present in sample)",
+            "responseMessage", "Response message (eg. OK, Not Found, etc.)",
+            "responseTime", "Response time, time to full response loaded",
+            "responseTimeMicros", "Same as responseTime, but multiplied by 1000 (surrogate field)",
+            "sampleLabel", "Name of the sampler that made the request",
+            "sentBytes", "Number of request bytes sent (if available)",
+            "startTime", "Epoch time when the request was started",
+            "startTimeMillis", "Same as startTime, but divided by 1000 (surrogate field, eg. 1311121131.062)",
+            "threadName", "Name of thread in Thread Group that processed the request",
+            "variable#<N>", "Sample variable with index N (eg. variable#2), see help for details",
+            "allRequestHeaders", "with subsampler not \\r\\n",
+            "addResponseData", "with subsampler not \\r\\n"
     };
 
     public FlexibleFileWriterGui() {
@@ -148,13 +141,13 @@ public class FlexibleFileWriterGui extends AbstractListenerGui implements Clipbo
         browseButton.addActionListener(new BrowseAction(filename));
 
         addToPanel(mainPanel, labelConstraints, 0, 2, new JLabel("Overwrite existing file: ", JLabel.RIGHT));
-        addToPanel(mainPanel, editConstraints, 1, 2, overwrite=new JCheckBox());
+        addToPanel(mainPanel, editConstraints, 1, 2, overwrite = new JCheckBox());
 
         addToPanel(mainPanel, labelConstraints, 0, 3, new JLabel("Write File Header: ", JLabel.RIGHT));
         header = new JTextArea();
         header.setLineWrap(true);
         addToPanel(mainPanel, editConstraints, 1, 3, GuiBuilderHelper.getTextAreaScrollPaneContainer(header, 3));
-        
+
         editConstraints.insets = new java.awt.Insets(2, 0, 0, 0);
         labelConstraints.insets = new java.awt.Insets(2, 0, 0, 0);
         addToPanel(mainPanel, labelConstraints, 0, 4, new JLabel("Record each sample as: ", JLabel.RIGHT));
@@ -253,8 +246,8 @@ public class FlexibleFileWriterGui extends AbstractListenerGui implements Clipbo
                 @Override
                 public DataFlavor[] getTransferDataFlavors() {
                     return new DataFlavor[]{
-                                DataFlavor.stringFlavor
-                            };
+                            DataFlavor.stringFlavor
+                    };
                 }
 
                 @Override
