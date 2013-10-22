@@ -221,7 +221,7 @@ public class FlexibleFileWriter
             return;
         }
 
-        ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 20);
+        ByteBuffer buf = ByteBuffer.allocateDirect(1024 * 100);
         for (int n = 0; n < compiledConsts.length; n++) {
             if (compiledConsts[n] != null) {
                 synchronized (compiledConsts) {
