@@ -48,8 +48,6 @@ public class FlexibleFileWriterGui extends AbstractListenerGui implements Clipbo
             "startTimeMillis", "Same as startTime, but divided by 1000 (surrogate field, eg. 1311121131.062)",
             "threadName", "Name of thread in Thread Group that processed the request",
             "variable#<N>", "Sample variable with index N (eg. variable#2), see help for details",
-            "allRequestHeaders", "with subsampler not \\r\\n",
-            "addResponseData", "with subsampler not \\r\\n"
     };
 
     public FlexibleFileWriterGui() {
@@ -97,13 +95,9 @@ public class FlexibleFileWriterGui extends AbstractListenerGui implements Clipbo
 
     private void initFields() {
         filename.setText("testResults.txt");
-        columns.setText("endTimeMillis|\\t|"
-                + "responseTime|\\t|latency|\\t|"
-                + "sentBytes|\\t|receivedBytes|\\t|"
-                + "isSuccessful|\\t|responseCode|\\r\\n");
+        columns.setText("---- |threadName|\\t|startTime|\\t|sampleLabel|\\t|responseTime|\\t|isSuccsessful|Req:|requestData|\\r\\nRsp:|responseData|\\r\\n\\r\\n");
         overwrite.setSelected(false);
-        header.setText("endTimeMillis\tresponseTime\tlatency\tsentBytes\t"
-                + "receivedBytes\tisSuccessful\tresponseCode\n");
+        header.setText("");
         footer.setText("");
     }
 
