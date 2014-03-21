@@ -22,7 +22,10 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+<<<<<<< HEAD
 import java.nio.charset.Charset;
+=======
+>>>>>>> pr/1
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -163,7 +166,7 @@ public class FlexibleFileWriter
             } else {
                 compiledFields[n] = -1;
                 compiledVars[n] = -1;
-                if (chunks[n].indexOf(VAR_PREFIX) >= 0) {
+                if (chunks[n].contains(VAR_PREFIX)) {
                     log.debug(chunks[n] + " is sample variable");
                     String varN = chunks[n].substring(VAR_PREFIX.length());
                     try {
@@ -190,7 +193,7 @@ public class FlexibleFileWriter
         FileOutputStream fos = new FileOutputStream(filename, !isOverwrite());
         fileChannel = fos.getChannel();
 
-        String header = getFileHeader();
+        String header = JMeterPluginsUtils.replaceRNT(getFileHeader());
         if (!header.isEmpty()) {
             fileChannel.write(ByteBuffer.wrap(header.getBytes()));
         }
@@ -199,7 +202,7 @@ public class FlexibleFileWriter
     private synchronized void closeFile() {
         if (fileChannel != null && fileChannel.isOpen()) {
             try {
-                String footer = getFileFooter();
+                String footer = JMeterPluginsUtils.replaceRNT(getFileFooter());
                 if (!footer.isEmpty()) {
                     fileChannel.write(ByteBuffer.wrap(footer.getBytes()));
                 }
@@ -275,9 +278,12 @@ public class FlexibleFileWriter
     }
 
     /**
+<<<<<<< HEAD
      * @param buf
      * @param result
      * @param fieldID
+=======
+>>>>>>> pr/1
      * @return boolean true if existing field found, false instead
      */
     private boolean appendSampleResultField(ByteBuffer buf, SampleResult result, int fieldID) {
@@ -356,11 +362,18 @@ public class FlexibleFileWriter
                 break;
 
             case 16:
+<<<<<<< HEAD
                 if (result.getRequestHeaders() != null)
                     buf.put(result.getRequestHeaders().replaceAll(regex, "").getBytes());
                 for (SampleResult sr : result.getSubResults()) {
                     buf.put("\r\n".getBytes());
                     buf.put(sr.getRequestHeaders().replaceAll(regex, "").getBytes());
+=======
+                if (result.getSamplerData() != null) {
+                    buf.put(result.getSamplerData().getBytes());
+                } else {
+                    buf.put(b0);
+>>>>>>> pr/1
                 }
                 break;
 

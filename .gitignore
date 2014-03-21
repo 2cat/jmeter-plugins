@@ -1,3 +1,4 @@
+/extras/test.lock
 /plugins/target/
 /target/
 nbactions.xml
@@ -12,3 +13,7 @@ eg_globals.xml
 /extras/target/
 /extraslibs/target/
 /standard/target/
+*~
+.classpath
+.project
+.settings/
